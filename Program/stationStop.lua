@@ -38,7 +38,6 @@ function waitTrain()
           sleep(10)
         else
           print("No response...will try again shortly")
-          print("---Will wait for 5 seconds...")
           sleep(5)
         end 
       end 
