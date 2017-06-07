@@ -3,16 +3,19 @@ local title = "Station Stop Manager"
 local signalBox = "JPLogic Central"
 local locationName = "Platform 1"
 local signalBoxID = 6
-----Self-Populate from Config
 local data = {}
-local data1 = {}
+local trainInfo = {}
 local response = false
+
 --Startup
 local stopBlock = "top"
 local rednetSide = "back"
 local signalBlock = "bottom"
 local rfid = peripheral.wrap("right")
 rednet.open(rednetSide)
+os.loadAPI("Data/background")
+shell.run("Data/background")
+
 --Functions
 function waitTrain()
   rfid.scan(2)
@@ -23,18 +26,17 @@ function waitTrain()
       print("Train: "..UID.." arrived at "..locationName.."!")
       data = {["SignalBox"] = signalBox,["Location"] = locationName,["UniqueID"] = UID,["Time"] = timestamp}
     while response == false do
-      messageSend = textutils.serialise(data)
+      messageSend = textutils.serialize(data)
       rednet.send(signalBoxID,messageSend,"Checkpoint")
       print("Sent: "..UID.." - "..timestamp.." to "..signalBox.."(ID: "..signalBoxID..")!")
       print("Awaiting response...")
-      id,messageBack,proto = rednet.receive(5)
+      id,message,proto = rednet.receive(5)
         if id == signalBoxID and proto == "Train Info" then
           response = true
-          print(messageBack)
-          print(messageBack[1])
-          data1 = textutils.unserialise(messageBack)
-          print(data1[1])
-          --print(data1[2])
+          print(message)
+          trainInfo = textutils.unserialize(message)
+          print(trainInfo.Dep)
+          print(trainInfo.headCode)
           sleep(10)
         else
           print("No response...will try again shortly")
@@ -49,7 +51,8 @@ end
 
 
 while true do
-waitTrain()
+response = false
+parallel.waitForAny(OStime(),waitTrain())
 end
 
 --Main
