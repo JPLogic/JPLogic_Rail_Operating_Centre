@@ -25,11 +25,12 @@
 		end
 
 --Program
-		local x,y = term.getSize()
-		os.loadAPI("OS_API/settings")
+	    local x,y = term.getSize()
+	    os.loadAPI("OS_API/settings")
 	    local settings = settings.open("OS_Data/config")
 	    title = settings.read("Generic", "title")
-	    OSver = settings.read("Generic", "OSver")
+	    OpVer = fs.open("Data/version","r")
+	    OSver = OpVer.readAll()
 		term.clear()
 			term.setCursorPos(1,1)
 				print("+-------------------------------------------------+")
