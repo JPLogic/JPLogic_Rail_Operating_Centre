@@ -2,28 +2,16 @@
 ## Currently WIP!
 
 [stationStop]
-Title =
+title = JPLogic ROC
+program = 
 signalBox =
 locationName =
-signalBoxID = 
+signalBoxID = (number)
+rfidSize = (number, scan area size)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
---[Auto-Populate]
+--[Auto-Populate on start]
 [stationStop]
 stopBlock = "top"
 rednetSide = 
 signalBlock =
 rfid = 
-rfidSize =
