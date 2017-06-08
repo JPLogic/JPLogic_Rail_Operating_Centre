@@ -26,13 +26,24 @@ local function waitMessage()
     RLocation = data.Location
     UID = data.UID
     sentTime = data.Time
-    for i,v in pairs(UID) do
+    for i,v in pairs(UIDs)
+      if v == UID then
+        hCode = i
+      else
+      end
+    end
+    if hCode == "" then
+      print("No assigned timetable for"..UID.."!")
+    else
+      print("Train: "..UID.." is "..hCode.."!")
+    end
+    for i,v in pairs(hCode) do
       if i == signalBox then
-        if table[UID].signalBox.Location == RLocation then
-          ttLocation = table[UID].signalBox.Location
-          ttArr = table[UID].signalBox.Location.Data.Arr
-          ttDep = table[UID].signalBox.Location.Data.Dep
-          ttExit = table[UID].signalBox.Location.Data.Exit
+        if table[hCode].signalBox.Location == RLocation then
+          ttLocation = table[hCode].signalBox.Location
+          ttArr = table[hCode].signalBox.Location.Data.Arr
+          ttDep = table[hCode].signalBox.Location.Data.Dep
+          ttExit = table[hCode].signalBox.Location.Data.Exit
         else
         end
       else
