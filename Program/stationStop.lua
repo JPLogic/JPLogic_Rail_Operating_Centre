@@ -27,7 +27,7 @@ function waitTrain()
       data = {["SignalBox"] = signalBox,["Location"] = locationName,["UniqueID"] = UID,["Time"] = timestamp}
     while response == false do
       messageSend = textutils.serialize(data)
-      rednet.send(signalBoxID,messageSend,"Checkpoint")
+      rednet.send(signalBoxID,messageSend,"stationStop")
       print("Sent: "..UID.." - "..timestamp.." to "..signalBox.."(ID: "..signalBoxID..")!")
       print("Awaiting response...")
       id,message,proto = rednet.receive(5)
