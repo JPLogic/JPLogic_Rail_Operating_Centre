@@ -2,22 +2,30 @@
 --Vars - These will be ref from Config File
 local title = "Signal Box Server"
 local signalBox = "JPLogic Central"
-local locationName = "Platform 1"
 local signalBoxID = 6
 local data = {}
 local trainInfo = {}
 local response = false
 local adminpassword = "test"
---Startup
 local SignalCableSide = "top"
 local rednetSide = "back"
 local PointCableSide = "bottom"
-rednet.open(rednetSide)
+local RanLength = 20
+local RanLengthe = ""
 --Runs
 os.loadAPI("Data/background")
 shell.run("Data/background")
 
+--Tables
+all  = "0987654321ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
 --Functions
+local function setPWord()
+  for i = 1, tonumber(RanLength) do
+    r = math.random(#all)
+    Ranlengthe = RanLengthe.. string.sub(all,r,r)
+  end
+ranPWord = RanLengthe
+end
 local function waitMessage()
   id, message, proto = rednet.receive()
   if proto == "stationStop" then
@@ -72,8 +80,32 @@ local function waitKey()
       print("Invalid entry!")
       print("Termination request cancelled!")
     end
-  elseif key == keys.(a key) then
-    -- Do stuff
+  elseif key == keys.r then
+    print("Key: R, has been pressed: Rebooting Terminal")
+    print("Do you want ALL terminals in Signal Box area to reboot?")
+    allr = read()
+    if allr = "y" then
+      print("Instructing all terminals to reboot...standby")
+      print("This terminal will reboot in a moment")
+      proto = signalBox.." Reboot"
+      for i,v in pairs(allPC) do
+        idPC = v
+        namePC = i
+        rednet.send(v,ranPWord,proto)
+        print("Terminal: "..i.." instructed to reboot")
+      end
+      print("All terminals instructed to reboot - Rebooting")
+      sleep(0.2)
+      os.reboot()
+    elseif allr = "n" then
+      print("Rebooting this terminal, all others remain online...")
+      sleep(0.2)
+      os.reboot()
+    else
+      print("Invalid response, Reboot request cancelled!")
+      sleep(0.2)
+      break
+    end
   else
   end
 end
@@ -83,6 +115,15 @@ end
 
 end
 
+
+--Initial Startup
+print("Initializing session..")
+setPword()
+print("Random password set..")
+print("Contacting assets..")
+rednet.open(rednetSide)
+proto = signalBox.." Heartbeat")
+rednet.broadcast(ranPWord,proto)
 --Main
 while true do
 parallel.waitForAny(waitMessage(),waitKey(),OStime())
