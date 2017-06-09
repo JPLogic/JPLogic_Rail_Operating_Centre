@@ -18,6 +18,7 @@ shell.run("Data/background")
 
 --Tables
 all  = "0987654321ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+
 --Functions
 local function setPWord()
   for i = 1, tonumber(RanLength) do
@@ -26,6 +27,7 @@ local function setPWord()
   end
 ranPWord = RanLengthe
 end
+
 local function waitMessage()
   id, message, proto = rednet.receive()
   if proto == "stationStop" then
